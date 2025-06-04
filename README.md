@@ -148,10 +148,4 @@ docker logs -f alert-pay
 
 ---
 
-## Contato
-
-Para dúvidas ou problemas, abra uma issue no repositório.
-
----
-
 **Boa codificação!**
