@@ -1,0 +1,25 @@
+services: 
+  alert-pay-db:
+    image: postgres:16
+    container_name: alert-pay-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: alertpay
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./alertpay-data/db:/var/lib/postgresql/data
+
+  alert-pay:
+    build: .
+    image: alert-pay
+    ports:
+      - "4000:4000"
+    depends_on:
+      - alert-pay-db
+    env_file:
+      - .env
+    volumes:
+      - .:/app
