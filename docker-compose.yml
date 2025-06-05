@@ -1,4 +1,4 @@
-services: 
+services:
   alert-pay-db:
     image: postgres:16
     container_name: alert-pay-db
@@ -23,3 +23,8 @@ services:
       - .env
     volumes:
       - .:/app
+
+networks:
+  default:
+    external:
+      name: openfinance-net

@@ -4,6 +4,7 @@ import authMiddlewares from "./app/middlewares/auth.js";
 
 import UserController from "./app/controllers/UserController.js";
 import SessionController from "./app/controllers/SessionController.js";
+import BankSessionController from "./app/controllers/BankSessionController.js";
 
 const routes = new Router();
 
@@ -41,5 +42,7 @@ routes.get('/users', UserController.index);
 
 routes.delete('/users', UserController.delete);
 // Não há JSON para DELETE
+
+routes.post('/bank-login', BankSessionController.store);
 
 export default routes;
