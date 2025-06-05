@@ -2,8 +2,9 @@ import Sequelize from 'sequelize';
 import databaseConfig from '../config/database.js'
 
 import User from "../app/models/User.js";
+import UserBankToken from "../app/models/UserBankToken.js";
 
-const models = [User];
+const models = [User, UserBankToken];
 
 class Database {
 	constructor() {
