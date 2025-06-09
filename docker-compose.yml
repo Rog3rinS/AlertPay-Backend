@@ -23,6 +23,11 @@ services:
       - .env
     volumes:
       - .:/app
+    # Add a command to ensure the script is executable, then run it.
+    # This is robust for scripts mounted via volumes.
+    command: >
+      /bin/bash -c "chmod +x ./docker-entrypoint.sh &&
+                    ./docker-entrypoint.sh"
 
 networks:
   default:
