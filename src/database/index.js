@@ -3,8 +3,11 @@ import databaseConfig from '../config/database.js'
 
 import User from "../app/models/User.js";
 import UserBankToken from "../app/models/UserBankToken.js";
+import Invoice from '../app/models/Invoice.js';
+import NotificationSchedule from '../app/models/NotificationSchedule.js';
+import UserNotificationRule from '../app/models/UserNotificationRule.js';
 
-const models = [User, UserBankToken];
+const models = [User, UserBankToken, Invoice, NotificationSchedule, UserNotificationRule];
 
 class Database {
 	constructor() {
