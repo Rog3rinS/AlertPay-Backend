@@ -1,12 +1,14 @@
 import cron from 'node-cron';
 import importInvoices from '../src/app/services/ImportInvoicesJob.js';
 import updateInvoiceStatuses from '../src/app/services/UpdateInvoiceStatusJob.js';
+import dispatchNotifications from '../src/app/services/NotificationDispatcherService.js'
 
-// Executa os jobs uma vez assim que a API inicia
+// Executa os jobs imediatamente ao iniciar a API
 (async () => {
     console.log('[STARTUP] Executando jobs iniciais...');
     await importInvoices();
     await updateInvoiceStatuses();
+    await dispatchNotifications();
     console.log('[STARTUP] Jobs iniciais concluídos.');
 })();
 
@@ -15,5 +17,6 @@ cron.schedule('*/30 * * * *', async () => {
     console.log('[CRON] Executando jobs agendados...');
     await importInvoices();
     await updateInvoiceStatuses();
+    await dispatchNotifications();
     console.log('[CRON] Jobs agendados finalizados.');
 });
