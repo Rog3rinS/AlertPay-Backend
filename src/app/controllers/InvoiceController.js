@@ -70,6 +70,20 @@ class InvoiceController {
         }
     }
 
+    async getManualInvoices(req, res) {
+        const userCpf = req.userCpf;
+
+        try {
+            const manualInvoices = await Invoice.findAll({
+                where: { user_id: userCpf, origin: 'Manual' },
+            });
+            return res.json(manualInvoices);
+        } catch (error) {
+            console.error("Erro ao buscar faturas manuais:", error);
+            return res.status(500).json({ error: 'Erro ao buscar faturas manuais' });
+        }
+    }
+
     async update(req, res) {
         const invoice = await Invoice.findOne({
             where: { id: req.params.id, user_id: req.userCpf },

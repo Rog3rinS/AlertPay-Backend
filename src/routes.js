@@ -57,6 +57,9 @@ routes.post('/invoices', InvoiceController.store);
 //  "origin": "Manual"
 // }
 routes.get('/invoices', InvoiceController.index); // Não há JSON para GET
+
+routes.get('/invoices/manual', InvoiceController.getManualInvoices);
+
 routes.put('/invoices/:id', InvoiceController.update);
 // JSON ROUTE (exemplo para atualizar uma fatura) 
 // OBS.: só permitido para faturas com origin "Manual"
