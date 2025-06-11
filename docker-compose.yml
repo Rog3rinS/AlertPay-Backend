@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   alert-pay-db:
     image: postgres:16
@@ -21,6 +23,20 @@ services:
       - alert-pay-db
     env_file:
       - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  alert-pay-migrate:
+    build: .
+    image: alert-pay
+    depends_on:
+      - alert-pay-db
+    env_file:
+      - .env
+    environment:
+      - SKIP_DB_INIT=true
+    command: sh -c "npx sequelize-cli db:migrate"
     volumes:
       - .:/app
       - /app/node_modules

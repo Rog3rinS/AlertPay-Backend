@@ -1,42 +1,38 @@
-
 # AlertPay Backend
 
-Este projeto é o backend da aplicação AlertPay, que utiliza Node.js, Express, Sequelize, PostgreSQL e Docker.
+Backend da aplicação AlertPay, utilizando Node.js, Express, Sequelize, PostgreSQL e Docker.
 
 ---
 
 ## Requisitos
 
-- Docker e Docker Compose instalados
-- Node.js instalado (para rodar localmente, opcional)
+- Docker e Docker Compose instalados  
+- Node.js instalado (opcional, para rodar localmente)  
 - Acesso ao terminal/console
 
 ---
 
-## Configuração e execução com Docker
+## Configuração e Execução com Docker
 
 ### 1. Clonar o repositório
-
-```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Rog3rinS/AlertPay-Backend.git
 cd AlertPay-Backend
-```
 
-### 2. Configurar variáveis de ambiente no `docker-compose.yml`
 
-As variáveis necessárias já estão definidas no `docker-compose.yml`, incluindo:
+2. Ajustar o arquivo de conexão com o banco para evitar erros iniciais
+No arquivo src/database/index.js, comente temporariamente as linhas que inicializam o Sequelize e os models para evitar erros na primeira execução das migrations, pois o banco ainda não existe.
 
-- `PORT`
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASS`
-- `DB_NAME`
-- `AUTH_SECRET` (adicione a sua chave secreta aqui)
+// this.connection = new Sequelize(databaseConfig);
+// models.forEach(model => model.init(this.connection));
+// models.forEach(model => {
+//   if (model.associate) {
+//     model.associate(this.connection.models);
+//   }
+// });
 
-Exemplo:
+3. Configurar variáveis de ambiente no docker-compose.yml
+No docker-compose.yml já estão definidas as variáveis principais. Ajuste o valor de AUTH_SECRET para uma string secreta forte.
 
-```yaml
 environment:
   PORT: 4000
   DB_HOST: alert-pay-db
@@ -45,107 +41,100 @@ environment:
   DB_PASS: admin
   DB_NAME: alertpay
   AUTH_SECRET: sua_chave_secreta_aqui
-```
 
-> **Importante:** O segredo `AUTH_SECRET` é usado para assinar os tokens JWT. Use uma string forte e secreta.
+4. Modificar o package.json
+Para evitar warnings relacionados a ES Modules, adicione a propriedade "type": "module":
 
-### 3. Subir os containers
-
-```bash
-docker-compose up --build -d
-```
-
-### 4. Rodar as migrations dentro do container do backend
-
-Para criar as tabelas no banco de dados, execute as migrations com o comando abaixo:
-
-```bash
-docker exec -it alert-pay npm run sequelize-cli db:migrate
-```
-
-Ou, caso o script esteja configurado no `package.json` como:
-
-```json
-"scripts": {
-  "migrate": "sequelize-cli db:migrate",
+{
+  ...
+  "type": "module",
   ...
 }
-```
 
-Execute:
+5. Subir os containers com Docker Compose
 
-```bash
+docker-compose up -d --build
+Isso vai construir as imagens e subir os containers do banco e do backend.
+
+6. Rodar as migrations
+Execute as migrations dentro do container do backend para criar as tabelas no banco:
+
+docker-compose run --rm alert-pay npm run migrate
+
+ou
+
 docker exec -it alert-pay npm run migrate
-```
+(dependendo da sua configuração)
 
-### 5. Acessar o backend
+7. Descomentar as linhas no arquivo src/database/index.js
+Depois que as migrations rodarem e o banco estiver criado, descomente as linhas comentadas no passo 2 para que o Sequelize inicialize normalmente:
 
-O backend estará disponível na porta 4000 (http://localhost:4000).
+this.connection = new Sequelize(databaseConfig);
+models.forEach(model => model.init(this.connection));
+models.forEach(model => {
+  if (model.associate) {
+    model.associate(this.connection.models);
+  }
+});
+8. Iniciar a aplicação
+Se não estiver rodando ainda, inicie o backend:
 
----
+docker-compose up -d
 
-## Uso do token JWT
+9. Acessar o backend
+O backend estará disponível em:
 
-- Ao fazer login, você receberá um token JWT.
-- Esse token deve ser enviado no header `Authorization` das requisições autenticadas.
-- Exemplo do header:
+http://localhost:4000
+Uso do token JWT
+Ao fazer login, você receberá um token JWT.
 
-```
+Esse token deve ser enviado no header Authorization das requisições autenticadas.
+
+Exemplo do header:
+
+makefile
+
 Authorization: Bearer <seu_token_jwt_aqui>
-```
-
----
-
-## Rodando localmente (sem Docker)
-
+Rodando localmente (sem Docker)
 Se preferir rodar localmente:
 
-1. Instale as dependências:
+Instale as dependências:
 
-```bash
 npm install
-```
+Configure um arquivo .env com as variáveis necessárias (mesmas do docker-compose.yml).
 
-2. Configure um arquivo `.env` com as variáveis necessárias (mesmas do `docker-compose.yml`).
+Execute as migrations:
 
-3. Execute as migrations:
-
-```bash
 npx sequelize-cli db:migrate
-```
+Inicie o servidor:
 
-4. Inicie o servidor:
-
-```bash
 npm start
-```
+Comandos úteis Docker
+Para entrar no container backend:
 
----
+docker-compose exec alert-pay bash
+Para parar os containers:
 
-## Comandos úteis
-
-- Para parar os containers:
-
-```bash
 docker-compose down
-```
+Para ver logs do backend:
 
-- Para ver logs do backend:
-
-```bash
 docker logs -f alert-pay
-```
+Notas importantes
+Remova a linha version: do arquivo docker-compose.yml para evitar warnings.
 
----
+Warnings sobre networks.default: external.name is deprecated podem ser ignorados ou ajustados conforme a documentação Docker Compose.
 
-## Estrutura do projeto
+Certifique-se que a pasta alertpay-data/db tem permissão correta para o Docker acessar no seu sistema.
 
-- `/src`: código-fonte do backend
-- `/src/app/controllers`: controllers da aplicação
-- `/src/app/middlewares`: middlewares (ex.: autenticação)
-- `/src/app/models`: modelos Sequelize
-- `/src/database/migrations`: migrations Sequelize
+Estrutura do projeto
+/src: código-fonte do backend
 
----
+/src/app/controllers: controllers da aplicação
 
-**Boa codificação!**
+/src/app/middlewares: middlewares (ex.: autenticação)
+
+/src/app/models: modelos Sequelize
+
+/src/database/migrations: migrations Sequelize
+
+# Boa codificação!
