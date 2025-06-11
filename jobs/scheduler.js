@@ -13,7 +13,7 @@ import dispatchNotifications from '../src/app/services/NotificationDispatcherSer
 })();
 
 // Agenda execução automática a cada 30 minutos
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/2 * * * *', async () => {
     console.log('[CRON] Executando jobs agendados...');
     await importInvoices();
     await updateInvoiceStatuses();
