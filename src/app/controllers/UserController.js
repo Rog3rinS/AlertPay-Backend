@@ -11,6 +11,7 @@ class UserController {
 			password: Yup.string()
 				.required('Senha é obrigatória')
 				.min(6, 'A senha deve ter no mínimo 6 caracteres'),
+			phone: Yup.string().optional(), // telefone é opcional
 		});
 
 		if (!(await schema.isValid(req.body))) {
@@ -29,15 +30,16 @@ class UserController {
 			return res.status(400).json({ error: 'CPF ou E-mail já está em uso.' });
 		}
 
-		const { name } = await User.create(req.body);
+		const { name, phone } = await User.create(req.body);
 
-		return res.status(201).json({ cpf, name, email });
+		return res.status(201).json({ cpf, name, email, phone });
 	}
 
 	async update(req, res) {
 		const schema = Yup.object().shape({
 			name: Yup.string(),
 			email: Yup.string().email('E-mail inválido'),
+            phone: Yup.string(),
 			oldPassword: Yup.string().min(6, 'A senha antiga deve ter no mínimo 6 caracteres'),
 			password: Yup.string()
 				.min(6, 'A nova senha deve ter no mínimo 6 caracteres')
@@ -73,9 +75,9 @@ class UserController {
 
 		await user.update(req.body);
 
-		const { cpf, name, email } = user;
+		const { cpf, name, email, phone } = user;
 
-		return res.json({ cpf, name, email });
+		return res.json({ cpf, name, email, phone });
 	}
 
 	async index(req, res) {

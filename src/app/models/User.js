@@ -7,6 +7,7 @@ class User extends Model {
 			cpf: {
 				type: Sequelize.STRING,
 				primaryKey: true,
+				allowNull: false,
 			},
 			name: {
 				type: Sequelize.STRING,
@@ -17,6 +18,10 @@ class User extends Model {
 				allowNull: false,
 				unique: true,
 			},
+			phone: {
+                type: Sequelize.STRING,
+                allowNull: true, // Pode ser opcional, mas recomendado para SMS
+            },
 			password: {
 				type: Sequelize.STRING,
 				allowNull: false,
