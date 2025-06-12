@@ -53,6 +53,56 @@ class BankSessionController {
 			});
 		}
 	}
+
+	async delete(req, res) {
+		const schema = Yup.object().shape({
+			bankId: Yup.string()
+				.oneOf(Object.keys(INTERNAL_BANK_ENDPOINTS), 'bankId inválido')
+				.required(),
+		});
+
+		try {
+			// CORREÇÃO 1: Validar req.params em vez de req.body
+			await schema.validate(req.params, { abortEarly: false });
+		} catch (err) {
+			return res.status(400).json({ error: 'Falha na validação', details: err.errors });
+		}
+
+		// CORREÇÃO 2: Extrair bankId de req.params
+		const { bankId } = req.params;
+		const userCpf = req.userCpf;
+
+		try {
+			const deletedCount = await UserBankToken.destroy({
+				where: { user_cpf: userCpf, bank_id: bankId },
+			});
+
+			if (deletedCount === 0) {
+				return res.status(404).json({ error: 'Token não encontrado para este banco' });
+			}
+
+			return res.json({ message: 'Token removido com sucesso' });
+		} catch (err) {
+			return res.status(500).json({ error: 'Erro ao remover o token' });
+		}
+	}
+
+	async getAllBankTokens(req, res) {
+		const userCpf = req.userCpf;
+		try {
+			const connectedTokens = await UserBankToken.findAll({
+				where: { user_cpf: userCpf },
+				attributes: ['bank_id'],
+			});
+
+			// Retorna o array de tokens diretamente
+			return res.json(connectedTokens);
+
+		} catch (err) {
+			console.error("Error fetching connected banks:", err);
+			return res.status(500).json({ error: 'Erro ao buscar bancos conectados' });
+		}
+	}
 }
 
 export default new BankSessionController();
