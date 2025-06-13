@@ -97,6 +97,12 @@ Com o Docker em execução, utilize o Docker Compose para construir as imagens e
 docker compose up --build -d
 ```
 
+Obs: Talvez seja necessario dar permissao para os scripts rodarem, para isso rode:
+
+```bash
+sudo chmod +x wait-for.sh start.sh
+```
+
 O Docker irá:
 
 -   Construir a imagem do serviço `alert-pay`.
