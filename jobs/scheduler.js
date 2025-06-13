@@ -4,6 +4,7 @@ import updateInvoiceStatuses from '../src/app/services/UpdateInvoiceStatusJob.js
 import dispatchNotifications from '../src/app/services/NotificationDispatcherService.js'
 
 // Executa os jobs imediatamente ao iniciar a API
+/*
 (async () => {
     console.log('[STARTUP] Executando jobs iniciais...');
     await importInvoices();
@@ -11,6 +12,7 @@ import dispatchNotifications from '../src/app/services/NotificationDispatcherSer
     await dispatchNotifications();
     console.log('[STARTUP] Jobs iniciais concluídos.');
 })();
+*/
 
 // Agenda execução automática a cada 30 minutos
 cron.schedule('*/2 * * * *', async () => {

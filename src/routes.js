@@ -45,6 +45,8 @@ routes.get('/users', UserController.index); // Não há JSON para GET
 routes.delete('/users', UserController.delete); // Não há JSON para DELETE
 
 routes.post('/bank-login', BankSessionController.store);
+routes.delete('/bank-rm-login/:bankId', BankSessionController.delete);
+routes.get('/bank-logins', BankSessionController.getAllBankTokens);
 
 // Faturas
 routes.post('/invoices', InvoiceController.store);

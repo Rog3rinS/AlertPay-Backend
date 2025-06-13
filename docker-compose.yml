@@ -20,10 +20,14 @@ services:
     depends_on:
       - alert-pay-db
     env_file:
-      - .env
+      - .env # This line correctly loads environment variables from the .env file
     volumes:
       - .:/app
       - /app/node_modules
+      - ./wait-for.sh:/wait-for.sh
+      - ./start.sh:/start.sh
+    entrypoint: ["sh", "/start.sh"]
+    command: ["npm", "run", "sequelize-cli", "db:migrate", "&&", "npm", "start"]
 
 networks:
   default:
