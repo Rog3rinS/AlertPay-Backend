@@ -52,8 +52,8 @@ Garanta que você tenha as seguintes ferramentas instaladas em sua máquina:
 ### 1\. Clone o Repositório
 
 ```bash
-git clone <URL_DO_REPOSITORIO>
-cd AlertPay-Backend-testef
+git clone https://github.com/Rog3rinS/AlertPay-Backend.git
+cd AlertPay-Backend
 ```
 
 ### 2\. Configure as Variáveis de Ambiente
