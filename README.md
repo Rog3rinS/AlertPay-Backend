@@ -6,16 +6,16 @@ Este projeto é o backend da aplicação AlertPay, focado em agendamento e dispa
 
 O grande diferencial deste setup é a **automação**: ao iniciar os contêineres, os serviços aguardarão o banco de dados ficar pronto e, em seguida, executarão as *migrations* automaticamente antes de iniciar a aplicação.
 
-🏛️ Arquitetura
----------------
+## 🏛️ Arquitetura
 
 O ambiente é composto pelo serviço de backend principal e uma instância de banco de dados, cada um rodando em um contêiner Docker isolado. Eles se comunicam através de uma rede Docker.
 
-| **Serviço** | **Porta Exposta (Local)** | **Porta Interna (Contêiner)** | **Descrição** |
+| Serviço | Porta Exposta (Local) | Porta Interna (Contêiner) | Descrição |
+| :--- | :--- | :--- | :--- |
 | `alert-pay-db` | 5434 | 5432 | Instância do banco de dados PostgreSQL que armazena os dados da aplicação. |
 | `alert-pay` | 4000 | 4000 | A API backend principal, responsável por toda a lógica de negócio. |
 
-⚙️ Automação da Inicialização
+## ⚙️ Automação da Inicialização
 -----------------------------
 
 O serviço de API (`alert-pay`) utiliza um script de inicialização (`start.sh`) que automatiza as seguintes etapas:
@@ -51,12 +51,9 @@ Garanta que você tenha as seguintes ferramentas instaladas em sua máquina:
 
 ### 1\. Clone o Repositório
 
-Bash
-
-```
+```bash
 git clone <URL_DO_REPOSITORIO>
 cd AlertPay-Backend-testef
-
 ```
 
 ### 2\. Configure as Variáveis de Ambiente
@@ -88,7 +85,6 @@ MAIL_HOST=smtp.exemplo.com
 MAIL_PORT=587
 MAIL_USER=seu_email@exemplo.com
 MAIL_PASS=sua_senha_de_email
-
 ```
 
 > **Importante:** O segredo `AUTH_SECRET` é usado para assinar os tokens JWT. Use uma string forte e secreta.
@@ -97,11 +93,8 @@ MAIL_PASS=sua_senha_de_email
 
 Com o Docker em execução, utilize o Docker Compose para construir as imagens e iniciar todos os contêineres:
 
-Bash
-
-```
+```bash
 docker compose up --build -d
-
 ```
 
 O Docker irá:
@@ -115,9 +108,7 @@ Pronto! 🎉 Após alguns instantes, o backend estará no ar e pronto para uso n
 
 Você pode verificar os logs do contêiner com:
 
-Bash
-
-```
+```bash
 docker logs -f alert-pay
 
 ```
@@ -129,9 +120,7 @@ docker logs -f alert-pay
 
 Para parar e remover todos os contêineres, redes e volumes criados pelo ambiente:
 
-Bash
-
-```
+```bash
 docker-compose down
 
 ```
@@ -148,9 +137,7 @@ docker-compose down
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
   "cpf": "12345678910",
   "name": "Seu Nome",
@@ -169,9 +156,7 @@ JSON
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
   "email": "seu-nome@gmail.com",
   "password": "senha123"
@@ -192,9 +177,7 @@ JSON
 
 **Atualizar dados cadastrais:**
 
-JSON
-
-```
+```json
 {
   "name": "Seu Nome",
   "email": "seu-nome@gmail.com",
@@ -205,9 +188,7 @@ JSON
 
 **Alterar senha:**
 
-JSON
-
-```
+```json
 {
   "oldPassword": "senha123",
   "password": "novaSenha123",
@@ -240,9 +221,7 @@ JSON
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
     "email": "seu_email_no_banco@exemplo.com",
     "password": "sua_senha_no_banco",
@@ -259,9 +238,7 @@ JSON
 
 **Resposta:**
 
-JSON
-
-```
+```json
 [
     { "bank_id": "api-mini-bc" },
     { "bank_id": "banco-central" }
@@ -283,9 +260,7 @@ JSON
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
  "description": "Conta de luz",
  "amount": 320.50,
@@ -313,9 +288,7 @@ JSON
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
  "description": "Conta de luz ajustada",
  "amount": 305.00,
@@ -340,9 +313,7 @@ JSON
 
 **JSON Exemplo:**
 
-JSON
-
-```
+```json
 {
  "days_before": 3,
  "min_amount": 300,
